@@ -393,6 +393,309 @@ html, body {
 }
 .res-btn:hover { filter: brightness(1.12); }
 
+
+/* === Combo Japanese HUD & Escalating Visual Effects === */
+#scoreArea {
+  display: flex; align-items: center; gap: 14px; white-space: nowrap;
+}
+#scoreTxt { color: #f5e29b; font-size: clamp(13px, 1.55vw, 19px); white-space: nowrap; font-variant-numeric: tabular-nums; }
+#hudComboBadge {
+  display: inline-flex; align-items: baseline; gap: 5px;
+  padding: 2px 10px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(160, 195, 220, 0.28);
+  font-size: clamp(13px, 1.45vw, 18px); font-weight: 900; color: #d8ecf8;
+  transition: transform 0.12s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  font-variant-numeric: tabular-nums;
+}
+#hudComboBadge .hud-c-mult {
+  font-size: 0.72em; color: #9be8ff; font-weight: 800; margin-left: 2px;
+}
+#hudComboBadge.tier-1 {
+  color: #ffe266; border-color: rgba(255, 220, 90, 0.85);
+  background: rgba(78, 56, 12, 0.72); box-shadow: 0 0 12px rgba(255, 210, 65, 0.55);
+}
+#hudComboBadge.tier-2 {
+  color: #ff9c42; border-color: rgba(255, 130, 52, 0.95);
+  background: rgba(88, 32, 10, 0.82); box-shadow: 0 0 16px rgba(255, 115, 38, 0.72);
+}
+#hudComboBadge.tier-3 {
+  color: #70f4ff; border-color: rgba(95, 238, 255, 0.95);
+  background: rgba(12, 56, 78, 0.86); box-shadow: 0 0 18px rgba(85, 235, 255, 0.8);
+}
+#hudComboBadge.tier-4 {
+  color: #f38aff; border-color: rgba(235, 120, 255, 0.98);
+  background: rgba(64, 16, 86, 0.88); box-shadow: 0 0 22px rgba(220, 95, 255, 0.85);
+}
+#hudComboBadge.tier-5 {
+  color: #fff6b0; border-color: #fff39a;
+  background: linear-gradient(90deg, #a82038, #c97214, #1b8a62, #1f6bb8, #7b28b8);
+  background-size: 260% 100%;
+  animation: comboRainbowBg 2.2s linear infinite;
+  box-shadow: 0 0 24px rgba(255, 225, 120, 0.95);
+}
+
+/* Floating Right-Side Escalating Combo Display */
+#comboStageBox {
+  position: absolute; top: 62px; right: 22px; z-index: 28;
+  pointer-events: none; text-align: right;
+  opacity: 0; transform: scale(0.85) translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.14s ease;
+  padding: 6px 16px 8px; border-radius: 14px;
+}
+#comboStageBox.visible { opacity: 1; transform: scale(1) translateY(0); }
+.cs-main.pop { animation: comboPop 0.20s cubic-bezier(0.22, 1.35, 0.36, 1); }
+.cs-tier-lbl {
+  font-size: 12px; font-weight: 900; letter-spacing: 0.14em;
+  text-transform: uppercase; min-height: 15px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+.cs-main {
+  display: inline-flex; align-items: baseline; gap: 5px; line-height: 1.0;
+}
+#csNum {
+  font-size: clamp(32px, 4.4vw, 56px); font-weight: 900; font-style: italic;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.85);
+}
+.cs-unit {
+  font-size: clamp(16px, 2vw, 24px); font-weight: 900; letter-spacing: 0.04em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+.cs-sub {
+  margin-top: 2px; font-size: 13px; font-weight: 800; color: #d8f2ff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Tier 0: 2-9 コンボ */
+#comboStageBox.tier-0 #csNum, #comboStageBox.tier-0 .cs-unit { color: #f2f8ff; }
+#comboStageBox.tier-0 .cs-tier-lbl { color: #b6d8eb; }
+
+/* Tier 1: 10-19 コンボ (Gold Spark) */
+#comboStageBox.tier-1 {
+  background: radial-gradient(circle at 75% 50%, rgba(255, 200, 60, 0.22), rgba(0,0,0,0) 72%);
+}
+#comboStageBox.tier-1 #csNum {
+  font-size: clamp(38px, 5vw, 64px);
+  color: #ffe366;
+  text-shadow: 0 0 16px rgba(255, 205, 55, 0.85), 0 3px 10px #000;
+}
+#comboStageBox.tier-1 .cs-unit, #comboStageBox.tier-1 .cs-tier-lbl { color: #ffe788; }
+
+/* Tier 2: 20-29 コンボ (Blazing Flame) */
+#comboStageBox.tier-2 {
+  background: radial-gradient(circle at 75% 50%, rgba(255, 110, 35, 0.34), rgba(0,0,0,0) 74%);
+}
+#comboStageBox.tier-2 #csNum {
+  font-size: clamp(44px, 5.6vw, 72px);
+  background: linear-gradient(180deg, #fff4a8 0%, #ffa834 45%, #ff4b2b 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 14px rgba(255, 105, 30, 0.9)) drop-shadow(0 3px 6px rgba(0,0,0,0.85));
+}
+#comboStageBox.tier-2 .cs-unit { color: #ffb35c; text-shadow: 0 0 12px rgba(255, 100, 30, 0.85), 0 2px 6px #000; }
+#comboStageBox.tier-2 .cs-tier-lbl { color: #ffae52; }
+
+/* Tier 3: 30-39 コンボ (Electric Cyan Lightning) */
+#comboStageBox.tier-3 {
+  background: radial-gradient(circle at 75% 50%, rgba(60, 225, 255, 0.36), rgba(0,0,0,0) 74%);
+  animation: comboPulse3 0.9s ease-in-out infinite alternate;
+}
+#comboStageBox.tier-3 #csNum {
+  font-size: clamp(48px, 6.2vw, 78px);
+  background: linear-gradient(180deg, #ffffff 0%, #86f7ff 45%, #2298ff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 18px rgba(75, 232, 255, 0.95)) drop-shadow(0 3px 6px rgba(0,0,0,0.9));
+}
+#comboStageBox.tier-3 .cs-unit { color: #8af6ff; text-shadow: 0 0 14px rgba(65, 228, 255, 0.95), 0 2px 6px #000; }
+#comboStageBox.tier-3 .cs-tier-lbl { color: #7ff4ff; }
+
+/* Tier 4: 40-49 コンボ (Hyper Plasma Magenta) */
+#comboStageBox.tier-4 {
+  background: radial-gradient(circle at 75% 50%, rgba(225, 80, 255, 0.40), rgba(0,0,0,0) 76%);
+  animation: comboPulse4 0.7s ease-in-out infinite alternate;
+}
+#comboStageBox.tier-4 #csNum {
+  font-size: clamp(52px, 6.8vw, 84px);
+  background: linear-gradient(180deg, #fff5ff 0%, #ff8cf2 45%, #a53dff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 22px rgba(225, 90, 255, 0.98)) drop-shadow(0 3px 6px rgba(0,0,0,0.9));
+}
+#comboStageBox.tier-4 .cs-unit { color: #f79eff; text-shadow: 0 0 16px rgba(225, 95, 255, 0.95), 0 2px 6px #000; }
+#comboStageBox.tier-4 .cs-tier-lbl { color: #ff9ef5; }
+
+/* Tier 5: 50+ コンボ (Rainbow Legend Aura) */
+#comboStageBox.tier-5 {
+  background: radial-gradient(circle at 75% 50%, rgba(255, 230, 120, 0.42), rgba(145, 70, 255, 0.18) 45%, rgba(0,0,0,0) 78%);
+  animation: comboPulse5 0.55s ease-in-out infinite alternate;
+}
+#comboStageBox.tier-5 #csNum {
+  font-size: clamp(56px, 7.2vw, 90px);
+  background: linear-gradient(90deg, #ff5e78, #ffd64b, #5cff9d, #56e4ff, #c97dff, #ff5e78);
+  background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: comboRainbowBg 1.5s linear infinite;
+  filter: drop-shadow(0 0 24px rgba(255, 230, 110, 0.98)) drop-shadow(0 3px 8px rgba(0,0,0,0.92));
+}
+#comboStageBox.tier-5 .cs-unit {
+  color: #fff6b8;
+  text-shadow: 0 0 18px rgba(255, 220, 90, 0.98), 0 0 30px rgba(120, 230, 255, 0.8), 0 2px 6px #000;
+}
+#comboStageBox.tier-5 .cs-tier-lbl { color: #fff08a; }
+
+/* Milestone Cut-in & Screen Edge Flash */
+#comboFlashBorder {
+  position: absolute; inset: 0; pointer-events: none; z-index: 16;
+  opacity: 0; transition: opacity 0.35s ease-out;
+}
+#comboMilestoneBanner {
+  position: absolute; top: 108px; left: 50%; transform: translateX(-50%) scale(0.75);
+  z-index: 36; pointer-events: none;
+  padding: 8px 28px; border-radius: 999px;
+  font-size: clamp(16px, 2.2vw, 26px); font-weight: 900; letter-spacing: 0.06em;
+  white-space: nowrap; opacity: 0;
+  border: 2px solid #ffe266;
+  background: rgba(14, 18, 28, 0.92); color: #ffe77a;
+  box-shadow: 0 0 28px rgba(255, 215, 80, 0.65);
+}
+#comboMilestoneBanner.show {
+  animation: comboMilestoneAnim 1.45s cubic-bezier(0.18, 1.28, 0.32, 1) forwards;
+}
+
+@keyframes comboPop {
+  0%   { transform: scale(1.28) rotate(-2deg); }
+  55%  { transform: scale(0.96) rotate(1deg); }
+  100% { transform: scale(1.0) rotate(0deg); }
+}
+@keyframes comboRainbowBg {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 260% 50%; }
+}
+@keyframes comboPulse3 {
+  from { filter: drop-shadow(0 0 6px rgba(65, 228, 255, 0.55)); }
+  to   { filter: drop-shadow(0 0 18px rgba(95, 245, 255, 0.95)); }
+}
+@keyframes comboPulse4 {
+  from { filter: drop-shadow(0 0 8px rgba(220, 85, 255, 0.65)); }
+  to   { filter: drop-shadow(0 0 22px rgba(255, 130, 255, 1.0)); }
+}
+@keyframes comboPulse5 {
+  from { filter: drop-shadow(0 0 12px rgba(255, 225, 95, 0.8)); }
+  to   { filter: drop-shadow(0 0 28px rgba(120, 240, 255, 1.0)); }
+}
+@keyframes comboMilestoneAnim {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.62) translateY(10px); }
+  16%  { opacity: 1; transform: translateX(-50%) scale(1.08) translateY(0); }
+  28%  { opacity: 1; transform: translateX(-50%) scale(1.0) translateY(0); }
+  78%  { opacity: 1; transform: translateX(-50%) scale(1.0) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.08) translateY(-14px); }
+}
+
+/* Single-Key Branch Badge Highlight */
+.br-roma { font-size: 28px; }
+
+/* === Stage Ranking UI (Title Modal & Result Registration) === */
+#rankingBtn {
+  padding: 11px 20px; font-size: 15px; font-weight: 800; color: #ffe999;
+  background: rgba(52, 42, 18, 0.95); border: 2px solid rgba(255, 212, 90, 0.82);
+  border-radius: 10px; cursor: pointer;
+}
+#rankingBtn:hover { background: rgba(78, 62, 24, 1); filter: brightness(1.08); }
+
+#rankingCard {
+  width: min(760px, 94vw);
+  max-height: calc(100vh - 68px);
+  overflow-y: auto;
+  background: rgba(14, 19, 28, 0.97);
+  border: 3px solid #f5d05c;
+  border-radius: 14px; padding: 20px 24px 18px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.75);
+}
+#rankingCard h2 {
+  text-align: center; color: #ffe478; font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 900; letter-spacing: 0.06em; margin-bottom: 10px;
+}
+.rank-stage-tabs {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 12px;
+}
+.rank-tab-btn {
+  padding: 5px 11px; border-radius: 8px; font-size: 13px; font-weight: 800;
+  background: rgba(28, 40, 58, 0.92); color: #cde2f0;
+  border: 1.5px solid rgba(110, 150, 190, 0.45); cursor: pointer;
+}
+.rank-tab-btn:hover { border-color: #ffe066; color: #fff; }
+.rank-tab-btn.active {
+  background: linear-gradient(180deg, #3c6da0 0%, #264a72 100%);
+  border-color: #ffe26c; color: #fff8d6;
+}
+#rankingStageTitle {
+  text-align: center; font-size: 14px; font-weight: 800; color: #b8ddf2; margin-bottom: 10px;
+}
+.rank-table {
+  width: 100%; border-collapse: collapse; font-size: 13.5px;
+  background: rgba(18, 26, 38, 0.85); border-radius: 10px; overflow: hidden;
+}
+.rank-table th, .rank-table td {
+  padding: 7px 10px; text-align: center; border-bottom: 1px solid rgba(95, 130, 165, 0.25);
+}
+.rank-table th {
+  background: rgba(30, 44, 64, 0.95); color: #a9d2eb; font-size: 12px; font-weight: 800;
+}
+.rank-table td.r-name { text-align: left; font-weight: 800; color: #f6fbff; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-table td.r-score { font-weight: 900; color: #ffe478; font-variant-numeric: tabular-nums; }
+.rank-table tr.is-new { background: rgba(255, 215, 80, 0.20); }
+.rank-table tr.is-new td { color: #fff8d2; }
+.rank-empty {
+  text-align: center; padding: 18px 10px; color: #8ea9be; font-size: 13.5px; font-weight: 700;
+}
+.ranking-modal-actions {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+}
+.rank-clear-btn {
+  padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 800;
+  background: rgba(78, 28, 32, 0.9); color: #ffc2be;
+  border: 1.5px solid rgba(225, 105, 100, 0.55); cursor: pointer;
+}
+.rank-clear-btn:hover { background: rgba(112, 36, 40, 1); }
+
+/* Result Card Scroll & Ranking Registration Box */
+#resultCard {
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+.res-rank-section {
+  margin-top: 10px; padding: 10px 14px; border-radius: 10px;
+  background: rgba(20, 28, 42, 0.88);
+  border: 1.5px solid rgba(125, 175, 220, 0.42);
+}
+.res-rank-header {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 8px;
+}
+.res-rank-title { font-size: 14px; font-weight: 900; color: #ffe278; }
+.res-rank-form {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+#rankNameInput {
+  user-select: text; -webkit-user-select: text;
+  width: 170px; padding: 6px 10px; border-radius: 7px;
+  background: rgba(10, 15, 22, 0.96); color: #ffffff;
+  border: 1.5px solid rgba(130, 190, 235, 0.65);
+  font-size: 14px; font-weight: 700; outline: none;
+}
+#rankNameInput:focus { border-color: #ffe26c; box-shadow: 0 0 10px rgba(255, 226, 108, 0.4); }
+#rankSaveBtn {
+  padding: 6px 14px; border-radius: 7px; font-size: 13.5px; font-weight: 800;
+  background: linear-gradient(180deg, #3299d6 0%, #206b9e 100%);
+  color: #ffffff; border: 1.5px solid #96e3ff; cursor: pointer;
+}
+#rankSaveBtn:hover:not(:disabled) { filter: brightness(1.12); }
+#rankSaveBtn:disabled {
+  background: rgba(46, 84, 58, 0.85); border-color: #7ee39b; color: #d5ffe2; cursor: default;
+}
+#resRankStatus {
+  font-size: 12.5px; font-weight: 800; color: #96f2b4;
+}
+
 @media (max-width: 720px) {
   .slider-row { grid-template-columns: 110px 28px 1fr 28px 135px; gap: 6px; padding: 6px 8px; }
   .res-body { grid-template-columns: 1fr; }
@@ -407,7 +710,7 @@ html, body {
 
   <div id="topBar">
     <div id="hpTxt">LIFE: ● ● ● ● ●</div>
-    <div id="scoreTxt">SCORE: 000000 &nbsp; COMBO: 0</div>
+    <div id="scoreArea"><div id="scoreTxt">SCORE: 000000</div><div id="hudComboBadge"><span id="hudComboNum">0</span> コンボ<span class="hud-c-mult" id="hudComboMult"></span></div></div>
     <div id="progWrap">
       <div id="progTxt">ST.1 [1/13]</div>
       <button id="hudPauseBtn" type="button">ポーズ [ESC]</button>
@@ -416,13 +719,20 @@ html, body {
   </div>
 
   <div id="toast"></div>
+  <div id="comboFlashBorder"></div>
+  <div id="comboStageBox" class="tier-0">
+    <div class="cs-tier-lbl" id="csTierLbl"></div>
+    <div class="cs-main" id="csMain"><span id="csNum">0</span><span class="cs-unit">コンボ</span></div>
+    <div class="cs-sub" id="csSub"></div>
+  </div>
+  <div id="comboMilestoneBanner"></div>
   <div id="worldUI"></div>
 
   <!-- Branch Path Choice Overlay -->
   <div id="branchOverlay" class="overlay-backdrop hidden">
     <div id="branchBanner">
       <h3>進路分岐！ どちらの道を進む？</h3>
-      <p>もじを タイプするか、← → キー／クリックで えらぼう！</p>
+      <p>「H」（ひだり）または「M」（みぎ）を 1文字タイプ！（← → キー／クリックもOK）</p>
     </div>
     <div class="branch-grid">
       <div class="branch-card left" id="branchLeftCard">
@@ -455,9 +765,24 @@ html, body {
       <div class="divider"></div>
       <div class="title-actions">
         <button id="startBtn" type="button">▶ &nbsp;STAGE 1 を あそぶ！</button>
+        <button id="rankingBtn" type="button">🏆 ランキング [R]</button>
         <button id="fsBtn" type="button">ぜんがめん [F11]</button>
       </div>
       <div id="titleHint">マウスで ツマミをうごかすか、↑↓←→キーでも かえられるよ！ &nbsp; [SPACE / ENTER] で スタート &nbsp; [ESC] いちじていし</div>
+    </div>
+  </div>
+
+  <!-- Stage Ranking Modal -->
+  <div id="rankingOverlay" class="overlay-backdrop hidden">
+    <div id="rankingCard">
+      <h2>🏆 ステージ別 ランキング（TOP 5）</h2>
+      <div id="rankStageTabs" class="rank-stage-tabs"></div>
+      <div id="rankingStageTitle"></div>
+      <div id="rankingTableWrap"></div>
+      <div class="ranking-modal-actions">
+        <button id="rankClearStageBtn" class="rank-clear-btn" type="button">このステージの記録を消去</button>
+        <button id="rankCloseBtn" class="res-btn primary" type="button">閉じる [ESC]</button>
+      </div>
     </div>
   </div>
 
@@ -496,6 +821,17 @@ html, body {
       </div>
       <div class="divider"></div>
       <div id="resTreasure"></div>
+      <div id="resRankSection" class="res-rank-section">
+        <div class="res-rank-header">
+          <div class="res-rank-title" id="resRankTitle">🏆 STAGE 1 ランキング（TOP 5）</div>
+          <div class="res-rank-form">
+            <input id="rankNameInput" type="text" maxlength="12" placeholder="なまえ（例：プレイヤー）" autocomplete="off">
+            <button id="rankSaveBtn" type="button">ランキングに登録</button>
+            <span id="resRankStatus"></span>
+          </div>
+        </div>
+        <div id="resRankTableWrap"></div>
+      </div>
       <div id="resFooter"></div>
       <div id="resActions" class="res-actions"></div>
     </div>
@@ -530,6 +866,9 @@ function makeRng(seed) {
 }
 
 const STORAGE_KEY = "sunlit_ruins_3d_settings_v1";
+const RANKING_STORAGE_KEY = "sunlit_ruins_3d_rankings_v1";
+const RANKING_MAX_PER_STAGE = 5;
+
 function loadUserSettings() {
   const defaults = {
     graphics_level: 3,
@@ -538,6 +877,7 @@ function loadUserSettings() {
     sfx_mode_idx: 0,
     bgm_muted: false,
     found_treasures: {},
+    player_name: "",
   };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -552,6 +892,9 @@ function loadUserSettings() {
         if (d.found_treasures && typeof d.found_treasures === "object") {
           defaults.found_treasures = d.found_treasures;
         }
+        if (typeof d.player_name === "string") {
+          defaults.player_name = d.player_name.slice(0, 12);
+        }
       }
     }
   } catch (e) {}
@@ -559,6 +902,41 @@ function loadUserSettings() {
 }
 function saveUserSettings(cfg) {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); } catch (e) {}
+}
+function loadRankings() {
+  try {
+    const raw = localStorage.getItem(RANKING_STORAGE_KEY);
+    if (raw) {
+      const d = JSON.parse(raw);
+      if (d && typeof d === "object") return d;
+    }
+  } catch (e) {}
+  return {};
+}
+function saveRankings(data) {
+  try { localStorage.setItem(RANKING_STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+function getStageRankingList(stageNum) {
+  const all = loadRankings();
+  const list = all[String(stageNum)];
+  return Array.isArray(list) ? list : [];
+}
+function addStageRankingEntry(stageNum, entry) {
+  const all = loadRankings();
+  const key = String(stageNum);
+  const list = Array.isArray(all[key]) ? all[key].slice() : [];
+  list.push(entry);
+  list.sort((a, b) => (b.score - a.score) || (b.maxCombo - a.maxCombo));
+  const trimmed = list.slice(0, RANKING_MAX_PER_STAGE);
+  all[key] = trimmed;
+  saveRankings(all);
+  const rankIdx = trimmed.findIndex(item => item.id === entry.id);
+  return { list: trimmed, placedRank: rankIdx >= 0 ? (rankIdx + 1) : -1 };
+}
+function clearStageRanking(stageNum) {
+  const all = loadRankings();
+  delete all[String(stageNum)];
+  saveRankings(all);
 }
 
 // =====================================================================
@@ -892,6 +1270,33 @@ class AudioEngine {
       this._fade(out, 10, 110, sr);
       this.sfxBank.gameover_sting = this._toMonoBuffer(out, 0.44, sr);
     }
+    // combo_up (5 escalating bright arpeggio chimes for 10/20/30/40/50+ combo milestones)
+    {
+      const chordSets = [
+        [523.25, 659.25, 783.99],
+        [587.33, 739.99, 880.00, 1174.66],
+        [659.25, 830.61, 987.77, 1318.51],
+        [783.99, 987.77, 1174.66, 1567.98],
+        [880.00, 1108.73, 1318.51, 1760.00, 2093.00],
+      ];
+      this.sfxBank.combo_up = chordSets.map((freqs) => {
+        const dur = 0.48, n = Math.floor(sr * dur), out = new Float32Array(n);
+        for (let k = 0; k < freqs.length; k++) {
+          const st = k * 0.042;
+          const s0 = Math.floor(st * sr);
+          const f = freqs[k];
+          for (let i = s0; i < n; i++) {
+            const lt = (i - s0) / sr;
+            const env = Math.min(1, lt / 0.006) * Math.exp(-lt * 8.5);
+            const w = Math.sin(2*Math.PI*f*lt)*0.62 + Math.sin(4*Math.PI*f*lt)*0.24 + Math.sin(6*Math.PI*f*lt)*0.10;
+            out[i] += w * env * 0.34;
+          }
+        }
+        this._bandPass(out, 200, 6200, sr);
+        this._fade(out, 3, 40, sr);
+        return this._toMonoBuffer(out, 0.44, sr);
+      });
+    }
   }
 
   playSfx(name, sfxKey = null, comboIdx = 0) {
@@ -900,6 +1305,9 @@ class AudioEngine {
     if (name === "type") {
       const set = this.sfxBank.type_sets[sfxKey || "gun"];
       buf = set[clamp(comboIdx, 0, set.length - 1)];
+    } else if (name === "combo_up") {
+      const set = this.sfxBank.combo_up;
+      buf = set ? set[clamp(comboIdx, 0, set.length - 1)] : null;
     } else {
       buf = this.sfxBank[name];
     }
@@ -6996,6 +7404,11 @@ class GameDirector {
     this.startStage = cfg.start_stage;
     this.sfxModeIdx = cfg.sfx_mode_idx;
     this.foundTreasures = cfg.found_treasures || {};
+    this.playerName = cfg.player_name || "";
+    this.rankingOpen = false;
+    this.rankingViewStage = this.startStage;
+    this.resultSavedEntryId = null;
+    this.lastResultMeta = null;
     AUDIO.setMuted(cfg.bgm_muted);
 
     CURRENT_QUALITY = this.graphicsLevel;
@@ -7067,6 +7480,22 @@ class GameDirector {
     this.treasureBadge = document.getElementById('treasureBadge');
     this.startBtn = document.getElementById('startBtn');
     this.fsBtn = document.getElementById('fsBtn');
+    this.rankingBtn = document.getElementById('rankingBtn');
+    this.rankingOverlay = document.getElementById('rankingOverlay');
+    this.hudComboBadge = document.getElementById('hudComboBadge');
+    this.hudComboNum = document.getElementById('hudComboNum');
+    this.hudComboMult = document.getElementById('hudComboMult');
+    this.comboStageBox = document.getElementById('comboStageBox');
+    this.csTierLbl = document.getElementById('csTierLbl');
+    this.csMain = document.getElementById('csMain');
+    this.csNum = document.getElementById('csNum');
+    this.csSub = document.getElementById('csSub');
+    this.comboMilestoneBanner = document.getElementById('comboMilestoneBanner');
+    this.comboFlashBorder = document.getElementById('comboFlashBorder');
+    this.rankNameInput = document.getElementById('rankNameInput');
+    this.rankSaveBtn = document.getElementById('rankSaveBtn');
+    this.resRankStatus = document.getElementById('resRankStatus');
+    this.comboFlashTimer = 0;
 
     this._buildTitleSliders();
     this._bindEvents();
@@ -7170,6 +7599,26 @@ class GameDirector {
       AUDIO.unlockAndResumeBgm();
       this.toggleFullscreen();
     });
+    this.rankingBtn.addEventListener('click', () => {
+      AUDIO.unlockAndResumeBgm();
+      this.openRankingModal(this.startStage);
+    });
+    document.getElementById('rankCloseBtn').addEventListener('click', () => {
+      AUDIO.unlockAndResumeBgm();
+      this.closeRankingModal();
+    });
+    document.getElementById('rankClearStageBtn').addEventListener('click', () => {
+      AUDIO.unlockAndResumeBgm();
+      if (confirm(`STAGE ${this.rankingViewStage} のランキング記録をすべて消去しますか？`)) {
+        clearStageRanking(this.rankingViewStage);
+        this._renderRankingModal();
+        AUDIO.playSfx('miss');
+      }
+    });
+    this.rankSaveBtn.addEventListener('click', () => {
+      AUDIO.unlockAndResumeBgm();
+      this._registerCurrentResultToRanking();
+    });
     document.getElementById('hudPauseBtn').addEventListener('click', () => {
       AUDIO.unlockAndResumeBgm();
       if (this.state === "MOVING" || this.state === "COMBAT") this.togglePause();
@@ -7201,12 +7650,24 @@ class GameDirector {
     window.addEventListener('keydown', (e) => {
       AUDIO.unlockAndResumeBgm();
       if (e.ctrlKey || e.altKey || e.metaKey) return;
+      const activeEl = document.activeElement;
+      // Allow free text typing inside the ranking username input box
+      if (activeEl && activeEl.id === "rankNameInput") {
+        if (e.code === "Escape") {
+          activeEl.blur();
+          e.preventDefault();
+        } else if (e.code === "Enter" && !e.isComposing) {
+          e.preventDefault();
+          this._registerCurrentResultToRanking();
+          activeEl.blur();
+        }
+        return;
+      }
       if (e.repeat && (this.state === "MOVING" || this.state === "COMBAT" || this.state === "BRANCH_CHOICE")) return;
       if (["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Tab","F11"].includes(e.code)) {
         e.preventDefault();
       }
       if (e.code === "F11") { this.toggleFullscreen(); return; }
-      const activeEl = document.activeElement;
       if (activeEl && (activeEl.tagName === "INPUT" || activeEl.tagName === "BUTTON") && (e.code === "Space" || e.code === "Enter")) {
         activeEl.blur();
         e.preventDefault();
@@ -7230,6 +7691,7 @@ class GameDirector {
       sfx_mode_idx: this.sfxModeIdx,
       bgm_muted: AUDIO.muted,
       found_treasures: this.foundTreasures,
+      player_name: this.playerName,
     });
   }
 
@@ -7468,7 +7930,10 @@ class GameDirector {
     this.pauseOverlay.classList.add('hidden');
     this.resultOverlay.classList.add('hidden');
     this.branchOverlay.classList.add('hidden');
+    this.rankingOverlay.classList.add('hidden');
+    this.rankingOpen = false;
     this.toastEl.style.display = 'none';
+    this._resetComboVisual();
     AUDIO.playBgm("title");
     this._syncTitleSliders();
     this.updateHUD();
@@ -7493,6 +7958,8 @@ class GameDirector {
     this.pauseOverlay.classList.add('hidden');
     this.resultOverlay.classList.add('hidden');
     this.branchOverlay.classList.add('hidden');
+    this.rankingOverlay.classList.add('hidden');
+    this.rankingOpen = false;
     this.stageScore = 0;
     this.stageMaxCombo = 0;
     this.stageOk = 0;
@@ -7509,6 +7976,7 @@ class GameDirector {
     this.showToast(GAME_DATA.STAGE_THEMES[num].title, "#ffe88c", 3.2);
     this.updateHUD();
     this.startEncounterMove();
+    this._syncComboVisual(false);
   }
 
   startEncounterMove() {
@@ -7541,21 +8009,14 @@ class GameDirector {
   _enterBranchChoice() {
     this.state = "BRANCH_CHOICE";
     const cfg = GAME_DATA.STAGE_BRANCHES[this.stageNum];
-    if (this.difficulty === 1) {
-      this.branchLeftWord  = new TypingWord("L (ひだり)", "l");
-      this.branchRightWord = new TypingWord("R (みぎ)",   "r");
-    } else if (this.difficulty === 2) {
-      this.branchLeftWord  = new TypingWord("ひ (ひだり)", "ひ");
-      this.branchRightWord = new TypingWord("み (みぎ)",   "み");
-    } else {
-      this.branchLeftWord  = new TypingWord("ひだり", "ひだり");
-      this.branchRightWord = new TypingWord("みぎ",   "みぎ");
-    }
+    this.branchLeftWord  = new TypingWord("ひだり", "h");
+    this.branchRightWord = new TypingWord("みぎ",   "m");
     document.getElementById('brLeftName').textContent = cfg.left.name;
     document.getElementById('brRightName').textContent = cfg.right.name;
     document.getElementById('brLeftJp').textContent = this.branchLeftWord.displayJp;
     document.getElementById('brRightJp').textContent = this.branchRightWord.displayJp;
     this._refreshBranchChoiceUI();
+    this._syncComboVisual(false);
     this.branchOverlay.classList.remove('hidden');
     AUDIO.playSfx('heal');
   }
@@ -7730,6 +8191,178 @@ class GameDirector {
     document.getElementById('pRetryTxt').textContent = `STAGE ${this.stageNum} やり直し`;
   }
 
+  _getComboTier(combo) {
+    if (combo >= 50) return 5;
+    if (combo >= 40) return 4;
+    if (combo >= 30) return 3;
+    if (combo >= 20) return 2;
+    if (combo >= 10) return 1;
+    return 0;
+  }
+
+  _getComboMultiplier(combo) {
+    if (combo >= 75) return 2.5;
+    if (combo >= 50) return 2.25;
+    if (combo >= 40) return 2.0;
+    if (combo >= 30) return 1.75;
+    if (combo >= 20) return 1.5;
+    if (combo >= 10) return 1.25;
+    return 1.0;
+  }
+
+  _resetComboVisual() {
+    if (!this.comboStageBox) return;
+    this.comboStageBox.className = "tier-0";
+    this.comboMilestoneBanner.classList.remove("show");
+    this.comboFlashBorder.style.opacity = "0";
+    this.comboFlashTimer = 0;
+  }
+
+  _syncComboVisual(popNow = false) {
+    if (!this.comboStageBox) return;
+    const c = this.combo;
+    const tier = this._getComboTier(c);
+    const mult = this._getComboMultiplier(c);
+    const tierLabels = ["", "GREAT!", "FEVER!!", "SUPER!!", "HYPER!!!", "LEGEND!!!!"];
+
+    if (c < 2 || (this.state !== "MOVING" && this.state !== "COMBAT")) {
+      this.comboStageBox.className = "tier-0";
+      return;
+    }
+
+    this.csNum.textContent = String(c);
+    this.csTierLbl.textContent = tierLabels[tier];
+    this.csSub.textContent = mult > 1.0 ? `得点 ×${mult.toFixed(2).replace(/0$/, '')}` : "";
+    this.comboStageBox.className = `visible tier-${tier}`;
+    if (popNow && this.csMain) {
+      this.csMain.classList.remove("pop");
+      void this.csMain.offsetWidth;
+      this.csMain.classList.add("pop");
+    }
+  }
+
+  _triggerComboMilestone(combo, bonusPts, mult) {
+    const tier = this._getComboTier(combo);
+    const tierStyles = [
+      null,
+      { label: "GREAT!",     col: "#ffe46b", border: "#ffd94a", glow: "rgba(255,210,60,0.75)",  edge: "rgba(255,210,60,0.45)" },
+      { label: "FEVER!!",    col: "#ffae54", border: "#ff7a33", glow: "rgba(255,115,35,0.85)",  edge: "rgba(255,110,35,0.55)" },
+      { label: "SUPER!!",    col: "#86f7ff", border: "#4ae8ff", glow: "rgba(65,230,255,0.90)",  edge: "rgba(65,230,255,0.60)" },
+      { label: "HYPER!!!",   col: "#f89eff", border: "#e06eff", glow: "rgba(220,90,255,0.92)",  edge: "rgba(220,90,255,0.62)" },
+      { label: "LEGEND!!!!", col: "#fff6b5", border: "#fff088", glow: "rgba(255,230,115,0.98)", edge: "rgba(255,220,105,0.70)" },
+    ];
+    const st = tierStyles[Math.max(1, tier)];
+    const multStr = `×${mult.toFixed(2).replace(/0$/, '')}`;
+    const bEl = this.comboMilestoneBanner;
+    bEl.textContent = `★ ${combo} コンボ達成！ ${st.label}  (+${bonusPts} pts / 得点 ${multStr})`;
+    bEl.style.color = st.col;
+    bEl.style.borderColor = st.border;
+    bEl.style.boxShadow = `0 0 32px ${st.glow}, 0 6px 20px rgba(0,0,0,0.65)`;
+    bEl.classList.remove("show");
+    void bEl.offsetWidth;
+    bEl.classList.add("show");
+
+    this.comboFlashBorder.style.boxShadow = `inset 0 0 ${45 + tier * 14}px ${10 + tier * 5}px ${st.edge}`;
+    this.comboFlashBorder.style.opacity = "1";
+    this.comboFlashTimer = 0.42;
+
+    AUDIO.playSfx('combo_up', null, Math.max(0, tier - 1));
+    if (combo >= 20) FX.addShake(0.14, Math.min(0.55, 0.22 + tier * 0.06));
+  }
+
+  _buildRankingTableHTML(list, highlightId = null) {
+    if (!list || !list.length) {
+      return `<div class="rank-empty">まだ記録がありません。クリアやプレイ後に名前を登録しよう！</div>`;
+    }
+    const medals = ["🥇 1位", "🥈 2位", "🥉 3位", "4位", "5位"];
+    const rows = list.map((it, i) => {
+      const cls = (highlightId && it.id === highlightId) ? ' class="is-new"' : '';
+      const clearTag = it.cleared ? "CLEAR" : "挑戦";
+      const diffTxt = `Lv.${it.diff || 1}`;
+      return `<tr${cls}>
+        <td>${medals[i] || `${i+1}位`}</td>
+        <td class="r-name">${escapeHtml(it.name || "ななし")}</td>
+        <td class="r-score">${Number(it.score || 0).toLocaleString()} pts</td>
+        <td>${escapeHtml(it.rank || "-")}</td>
+        <td>${Number(it.maxCombo || 0)} コンボ</td>
+        <td>${diffTxt} / ${clearTag}</td>
+        <td>${escapeHtml(it.date || "")}</td>
+      </tr>`;
+    }).join("");
+    return `<table class="rank-table">
+      <thead><tr><th>順位</th><th>ユーザー名</th><th>スコア</th><th>RANK</th><th>最大コンボ</th><th>難易度</th><th>日付</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  openRankingModal(stageNum = 1) {
+    this.rankingViewStage = clamp(stageNum, 1, 8);
+    this.rankingOpen = true;
+    this._renderRankingModal();
+    this.rankingOverlay.classList.remove('hidden');
+    AUDIO.playSfx('heal');
+  }
+
+  closeRankingModal() {
+    this.rankingOpen = false;
+    this.rankingOverlay.classList.add('hidden');
+  }
+
+  _renderRankingModal() {
+    const tabs = document.getElementById('rankStageTabs');
+    tabs.innerHTML = "";
+    for (let st = 1; st <= 8; st++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'rank-tab-btn' + (st === this.rankingViewStage ? ' active' : '');
+      b.textContent = `ST.${st}`;
+      b.addEventListener('click', () => {
+        AUDIO.unlockAndResumeBgm();
+        this.rankingViewStage = st;
+        this._renderRankingModal();
+      });
+      tabs.appendChild(b);
+    }
+    document.getElementById('rankingStageTitle').textContent = GAME_DATA.STAGE_THEMES[this.rankingViewStage].title;
+    const list = getStageRankingList(this.rankingViewStage);
+    document.getElementById('rankingTableWrap').innerHTML = this._buildRankingTableHTML(list);
+  }
+
+  _registerCurrentResultToRanking() {
+    if (!this.lastResultMeta || this.resultSavedEntryId) return;
+    const rawName = (this.rankNameInput.value || "").trim().slice(0, 12);
+    const name = rawName || "ななし";
+    this.playerName = rawName;
+    this._saveSettings();
+
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+    const entry = {
+      id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      name,
+      score: this.lastResultMeta.score,
+      rank: this.lastResultMeta.rank,
+      maxCombo: this.lastResultMeta.maxCombo,
+      diff: this.lastResultMeta.diff,
+      cleared: this.lastResultMeta.cleared,
+      date: dateStr,
+    };
+    const { list, placedRank } = addStageRankingEntry(this.lastResultMeta.stageNum, entry);
+    this.resultSavedEntryId = entry.id;
+    this.rankSaveBtn.disabled = true;
+    this.rankNameInput.disabled = true;
+    if (placedRank > 0) {
+      this.rankSaveBtn.textContent = `登録済 (${placedRank}位!)`;
+      this.resRankStatus.textContent = `🎉 STAGE ${this.lastResultMeta.stageNum} の ${placedRank}位 にランクイン！`;
+      AUDIO.playSfx('combo_up', null, Math.max(0, 5 - placedRank));
+    } else {
+      this.rankSaveBtn.textContent = "圏外";
+      this.resRankStatus.textContent = "今回はTOP 5圏外でした！また挑戦しよう！";
+      AUDIO.playSfx('heal');
+    }
+    document.getElementById('resRankTableWrap').innerHTML = this._buildRankingTableHTML(list, entry.id);
+  }
+
   onPlayerDamaged() {
     AUDIO.playSfx('damage');
     FX.addShake(0.25, 1.1);
@@ -7737,6 +8370,7 @@ class GameDirector {
     this.hp -= 1;
     this.stageDmg += 1;
     this.combo = 0;
+    this._resetComboVisual();
     this.updateHUD();
     if (this.hp <= 0) this.showGameOver();
   }
@@ -7778,7 +8412,7 @@ class GameDirector {
       `得点（SCORE） :  ${this.stageScore.toLocaleString()} pts${bonusStr}\n` +
       `総タイプ数    :  ${totalTypes.toLocaleString()} 回  (正打 ${this.stageOk.toLocaleString()} / ミス ${this.stageNg.toLocaleString()})\n` +
       `正確率 / 速度 :  ${acc.toFixed(1)}%   (${kps.toFixed(1)} 打/秒)\n` +
-      `最大コンボ    :  ${this.stageMaxCombo} COMBO   |   撃破数: ${this.stageKills} 体\n` +
+      `最大コンボ    :  ${this.stageMaxCombo} コンボ   |   撃破数: ${this.stageKills} 体\n` +
       `タイム / 到達 :  ${mins}分${String(secs).padStart(2,'0')}秒   |   ${reachStr}`;
     const rEl = document.getElementById('resRank');
     const rmEl = document.getElementById('resRankMsg');
@@ -7799,6 +8433,25 @@ class GameDirector {
       tEl.className = "missed";
       tEl.textContent = `☆ 隠し秘宝：未取得 【？？？】 （どちらかの分岐ルートに隠されているぞ！）`;
     }
+
+    // Setup Stage Ranking registration form & TOP 5 table
+    this.resultSavedEntryId = null;
+    this.lastResultMeta = {
+      stageNum: this.stageNum,
+      score: this.stageScore,
+      rank,
+      maxCombo: this.stageMaxCombo,
+      diff: this.difficulty,
+      cleared: !!cleared,
+    };
+    document.getElementById('resRankTitle').textContent = `🏆 STAGE ${this.stageNum} ランキング（TOP 5）`;
+    this.rankNameInput.value = this.playerName || "";
+    this.rankNameInput.disabled = false;
+    this.rankSaveBtn.disabled = false;
+    this.rankSaveBtn.textContent = "ランキングに登録";
+    this.resRankStatus.textContent = "";
+    document.getElementById('resRankTableWrap').innerHTML = this._buildRankingTableHTML(getStageRankingList(this.stageNum));
+    this._resetComboVisual();
 
     const sessTypes = this.sessionOk + this.sessionNg;
     const foundCnt = Object.keys(this.foundTreasures).filter(k => this.foundTreasures[k]).length;
@@ -7874,7 +8527,14 @@ class GameDirector {
 
   updateHUD() {
     this.hpTxt.textContent = "LIFE: " + "● ".repeat(Math.max(0, this.hp)) + "○ ".repeat(Math.max(0, 5 - this.hp));
-    this.scoreTxt.textContent = `SCORE: ${String(this.score).padStart(6, '0')}   COMBO: ${this.combo}`;
+    this.scoreTxt.textContent = `SCORE: ${String(this.score).padStart(6, '0')}`;
+    if (this.hudComboBadge) {
+      const tier = this._getComboTier(this.combo);
+      const mult = this._getComboMultiplier(this.combo);
+      this.hudComboNum.textContent = String(this.combo);
+      this.hudComboMult.textContent = mult > 1.0 ? `×${mult.toFixed(2).replace(/0$/, '')}` : "";
+      this.hudComboBadge.className = tier > 0 ? `tier-${tier}` : "";
+    }
     const totalW = this.stage ? this.stage.encounters.length : 13;
     const curW = Math.min(this.encIdx + 1, totalW);
     const tStar = this.stageTreasureFound ? " ★" : "";
@@ -7919,7 +8579,16 @@ class GameDirector {
       return;
     }
 
+    if (this.rankingOpen) {
+      if (code === "Escape") { this.closeRankingModal(); return; }
+      if (code === "ArrowLeft") { this.rankingViewStage = this.rankingViewStage <= 1 ? 8 : (this.rankingViewStage - 1); this._renderRankingModal(); return; }
+      if (code === "ArrowRight") { this.rankingViewStage = this.rankingViewStage >= 8 ? 1 : (this.rankingViewStage + 1); this._renderRankingModal(); return; }
+      if (/^Digit[1-8]$/.test(code)) { this.rankingViewStage = parseInt(code[5], 10); this._renderRankingModal(); return; }
+      return;
+    }
+
     if (this.state === "TITLE") {
+      if (code === "KeyR") { this.openRankingModal(this.startStage); return; }
       if (code === "ArrowUp") { this.selRow = (this.selRow - 1 + this.sliderEls.length) % this.sliderEls.length; this._syncTitleSliders(); return; }
       if (code === "ArrowDown") { this.selRow = (this.selRow + 1) % this.sliderEls.length; this._syncTitleSliders(); return; }
       if (code === "ArrowLeft" || code === "ArrowRight") {
@@ -8044,13 +8713,24 @@ class GameDirector {
     this.combo += 1;
     this.maxCombo = Math.max(this.maxCombo, this.combo);
     this.stageMaxCombo = Math.max(this.stageMaxCombo, this.combo);
-    this._addScore(20 * (1 + Math.floor(this.combo / 10)));
+
+    // Reasonable escalating combo multiplier (1.0x up to 2.5x cap) & milestone bonus
+    const mult = this._getComboMultiplier(this.combo);
+    const charPts = Math.round((20 + Math.min(this.combo, 50) * 1.2) * mult);
+    this._addScore(charPts);
+
+    if (this.combo >= 10 && this.combo % 10 === 0) {
+      const milestoneBonus = Math.min(500, Math.floor(this.combo / 10) * 100);
+      this._addScore(milestoneBonus);
+      this._triggerComboMilestone(this.combo, milestoneBonus, mult);
+    }
+    this._syncComboVisual(true);
     target.onHitChar();
 
     if (target.word.completed()) {
       if (target.isProjectile) {
         AUDIO.playSfx('stagger');
-        this._addScore(120);
+        this._addScore(Math.round(120 * mult));
         target.cleanup();
         this.locked = null;
       } else if (target.isTreasure) {
@@ -8074,7 +8754,7 @@ class GameDirector {
         if (killed) {
           this.stageKills += 1;
           this.sessionKills += 1;
-          this._addScore(target.isBoss ? 2000 : 300);
+          this._addScore(Math.round((target.isBoss ? 2000 : 300) * mult));
           this.locked = null;
           // Defeating the Stage Boss immediately banishes any remaining or pending minions & projectiles!
           if (target.isBoss) {
@@ -8102,6 +8782,7 @@ class GameDirector {
     this.stageNg += 1;
     this.sessionNg += 1;
     this.combo = 0;
+    this._resetComboVisual();
     this.updateHUD();
   }
 
@@ -8139,6 +8820,10 @@ class GameDirector {
     if (this.toastTimer > 0) {
       this.toastTimer -= clampedDt;
       if (this.toastTimer <= 0) this.toastEl.style.display = 'none';
+    }
+    if (this.comboFlashTimer > 0) {
+      this.comboFlashTimer = Math.max(0, this.comboFlashTimer - clampedDt);
+      if (this.comboFlashTimer <= 0 && this.comboFlashBorder) this.comboFlashBorder.style.opacity = "0";
     }
     if (this.dmgVignetteT > 0) {
       this.dmgVignetteT = Math.max(0, this.dmgVignetteT - dt);
