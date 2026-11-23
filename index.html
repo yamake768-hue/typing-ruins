@@ -10659,7 +10659,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
   // =========================================================================
 
   // --- STAGE 1 専用①：光あふれる廃村の石畳大広場（village_plaza：幅22m 屋外） ---
-  const buildVillagePlaza = (list, fxList, lightList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
+  const buildVillagePlaza = (list, fxList, lightList, doorNodeList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
     const { segStart, segEnd, nextYaw, right, fwd, pathW, heightAt } = plan;
     pushContinuousTerrain(list, plan, prevPlan, nextPlan, groundTex, groundTint);
     const mid = [(segStart[0]+segEnd[0])*0.5, heightAt(0.5), (segStart[2]+segEnd[2])*0.5];
@@ -10693,7 +10693,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
       // 広場外縁を囲む村の木造コテージ＆朝霧の巨木（全通路クリアランス確認！）
       const hx = mid[0] + right[0]*s*(pathW*0.5 + 6.4), hz = mid[2] + right[2]*s*(pathW*0.5 + 6.4);
       if (isClearOfAllRoads(hx, hz, 4.8)) {
-        addHouse(list, doorNodes, [hx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 6.4, hx, hz), hz], nextYaw + (s > 0 ? 90 : -90), null, true);
+        addHouse(list, doorNodeList, [hx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 6.4, hx, hz), hz], nextYaw + (s > 0 ? 90 : -90), null, true);
       }
       for (const tz of [-10.0, 10.0]) {
         const tx = mid[0] + right[0]*s*(pathW*0.5 + 5.2) + fwd[0]*tz, tzW = mid[2] + right[2]*s*(pathW*0.5 + 5.2) + fwd[2]*tz;
@@ -10789,7 +10789,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
   };
 
   // --- STAGE 2 専用①：王都の大バザール・時計台大広場（grand_bazaar：幅22m 屋外） ---
-  const buildGrandBazaar = (list, fxList, lightList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
+  const buildGrandBazaar = (list, fxList, lightList, doorNodeList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
     const { segStart, segEnd, nextYaw, right, fwd, pathW, idx, heightAt } = plan;
     pushContinuousTerrain(list, plan, prevPlan, nextPlan, groundTex, groundTint);
     const mid = [(segStart[0]+segEnd[0])*0.5, heightAt(0.5), (segStart[2]+segEnd[2])*0.5];
@@ -10835,7 +10835,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
       if (s === 1 && isClearOfAllRoads(cx, cz, 4.6)) {
         addClockTower(list, [cx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 5.8, cx, cz), cz], nextYaw - 90);
       } else if (isClearOfAllRoads(cx, cz, 4.6)) {
-        addHouse(list, doorNodes, [cx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 5.8, cx, cz), cz], nextYaw + 90, null, true);
+        addHouse(list, doorNodeList, [cx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 5.8, cx, cz), cz], nextYaw + 90, null, true);
       }
     }
     addSunbeam(fxList, [mid[0] - right[0]*9.0, mid[1] + 18.0, mid[2] - right[2]*9.0], [mid[0] + right[0]*2.0, mid[1], mid[2] + right[2]*2.0], nextYaw, cRGBA(255,246,204), 7.0, 0.26);
@@ -10985,7 +10985,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
   };
 
   // --- STAGE 6 専用①：巨大双子風車と花畑の大広場（windmill_plaza：幅22m 屋外） ---
-  const buildWindmillPlaza = (list, fxList, lightList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
+  const buildWindmillPlaza = (list, fxList, lightList, doorNodeList, plan, prevPlan, nextPlan, groundTex, groundTint) => {
     const { segStart, segEnd, nextYaw, right, fwd, pathW, heightAt } = plan;
     pushContinuousTerrain(list, plan, prevPlan, nextPlan, groundTex, groundTint);
     const mid = [(segStart[0]+segEnd[0])*0.5, heightAt(0.5), (segStart[2]+segEnd[2])*0.5];
@@ -11015,7 +11015,7 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
       // 広場左右の外縁に堂々と回る巨大双子風車（クリアランス厳守！）
       const wx = mid[0] + right[0]*s*(pathW*0.5 + 5.4), wz = mid[2] + right[2]*s*(pathW*0.5 + 5.4);
       if (isClearOfAllRoads(wx, wz, 5.2)) {
-        addWindmill(list, dynamicEnvNodes, [wx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 5.4, wx, wz), wz], nextYaw + (s > 0 ? 55 : -55), true, 1.18);
+        addWindmill(list, doorNodeList, [wx, outdoorGroundY(mid[1], pathW, pathW*0.5 + 5.4, wx, wz), wz], nextYaw + (s > 0 ? 55 : -55), true, 1.18);
       }
       addLamp(list, fxList, lightList, [mid[0] + right[0]*s*(pathW*0.5 - 2.2), mid[1], mid[2] + right[2]*s*(pathW*0.5 - 2.2)], nextYaw);
     }
@@ -11858,15 +11858,15 @@ function buildLongStageCourse(stageNum, qualityLevel, renderer) {
     } else if (rm === "sunset_aqueduct") {
       buildSunsetAqueduct(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else if (rm === "village_plaza") {
-      buildVillagePlaza(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
+      buildVillagePlaza(staticItems, fxList, lightList, doorNodes, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else if (rm === "forest_sanctuary") {
       buildForestSanctuary(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else if (rm === "grand_bazaar") {
-      buildGrandBazaar(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
+      buildGrandBazaar(staticItems, fxList, lightList, doorNodes, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else if (rm === "sky_observatory") {
       buildSkyObservatory(staticItems, fxList, lightList, plan);
     } else if (rm === "windmill_plaza") {
-      buildWindmillPlaza(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
+      buildWindmillPlaza(staticItems, fxList, lightList, doorNodes, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else if (rm === "meadow_amphitheater") {
       buildMeadowAmphitheater(staticItems, fxList, lightList, plan, prevPlan, nextPlan, th.ground_tex, groundTint);
     } else {
